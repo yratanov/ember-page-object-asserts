@@ -6,7 +6,7 @@ ember-page-object-asserts
 [travis-badge]: https://travis-ci.com/yratanov/ember-page-object-asserts.svg?branch=master
 [travis-badge-url]: https://travis-ci.org/yratanov/ember-page-object-asserts
 
-[Short description of the addon.]
+Adds QUnit asserts for [ember-cli-page-object](https://github.com/san650/ember-cli-page-object) to make test errors more user-friendly and make code shorter.
 
 
 Compatibility
@@ -28,7 +28,67 @@ ember install ember-page-object-asserts
 Usage
 ------------------------------------------------------------------------------
 
-[Longer description of how to use the addon in apps.]
+Import new assert in your `tests/test-helper.js` file:
+```js
+import { addPoAssert } from 'ember-page-object-asserts';
+
+addPoAssert();
+
+setApplication(Application.create(config.APP));
+```
+
+
+#### Built-in asserts
+
+##### hasText/hasNoText
+
+```js
+assert.po(page.element).hasText("test");
+assert.po(page.element).hasText(/test/);
+
+assert.po(page.element).hasNoText("test");
+assert.po(page.element).hasNoText(/test/);
+```
+
+##### has
+
+```js
+const page = create({
+  link: {
+    scope: 'a',
+    href: attribute('href'),
+    isHighlighted: hasClass('highlighted'),
+  },
+});
+
+assert.po(page.link).has('href', 'google.com');
+assert.po(page.link).has('isHighlighted');
+```
+
+
+##### isPresent/isHidden
+
+```js
+assert.po(page.input).isPresent();
+assert.po(page.input).isHidden();
+```
+
+##### hasValue
+
+```js
+assert.po(page.input).hasValue('test');
+```
+
+##### hasItems
+
+```js
+const page = create({
+  list: collection('li')
+});
+
+assert.po(page.list).hasItems(3);
+```
+
 
 
 Contributing

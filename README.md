@@ -9,6 +9,37 @@ ember-page-object-asserts
 Adds QUnit asserts for [ember-cli-page-object](https://github.com/san650/ember-cli-page-object) to make test errors more user-friendly and make code shorter.
 
 
+Why?
+------------------------------------------------------------------------------
+
+For example you have this test:
+
+
+```js
+const page = create({
+  link: {
+    scope: 'a',
+    href: attribute('href'),
+    hasText: hasText(),
+  },
+});
+
+assert.equal(page.link.text, 'Some text');
+assert.equal(page.link.hasText('something'));
+assert.ok(page.link.isPresent);
+```
+
+
+If you don't provide message for every assert you will get very unhelpful messages, like `expecte: true, got: false` and nothing more.
+But tests with page object are very descriptive by it's nature, we can utilize that to show better messages, without providing anything more.
+Example:
+
+```js
+assert.po(page.element).hasText("test"); //message 'page.element: has text "text"'
+assert.po(page.link).has('href', 'google.com'); //message 'page.link: has href "google.com"'
+assert.po(page.input).isPresent();  //message 'page.input: is present'
+``` 
+
 Compatibility
 ------------------------------------------------------------------------------
 

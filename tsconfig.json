@@ -40,9 +40,6 @@
       "ember-page-object-asserts/test-support/*": [
         "addon-test-support/*"
       ],
-      "ember-cli-page-object/-private": [
-        "./node_modules/ember-cli-page-object/types/index"
-      ],
       "*": [
         "types/*"
       ]

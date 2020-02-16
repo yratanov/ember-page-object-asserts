@@ -2,6 +2,12 @@ import { Component } from 'ember-cli-page-object/-private';
 import { has, hasItems, hasNoText, hasText, hasValue } from './assertions';
 import { pageObjectPath } from './helpers/page-object-path';
 
+interface Assertions {
+  (value?: any, message?: string): void
+  is(...args: any[]): void
+  includes(...args: any[]): void
+}
+
 export class PageObjectAssert {
   private assert: Assert;
   private readonly po: Component;
@@ -12,10 +18,33 @@ export class PageObjectAssert {
 
     for (let prop in node) {
       if (node.hasOwnProperty(prop) && typeof node[prop] !== 'function') {
-        // @ts-ignore
-        this[prop] = (value?: any, message?: string) => {
-          return this.has(prop, value, message);
+        const assertions = function(value?: unknown, message?: string) {
+          assertions.is(value, message);
+        } as Assertions
+
+        assertions.includes = (value: string, message?: string) => {
+          pushResult(
+            node,
+            assert, {
+            result: (node as any)[prop].includes(value),
+            actual: node[prop],
+            expected: value,
+            message: message || `${prop} includes "${value}"`
+          }
+          );
         }
+
+        assertions.is = (value: string|number|boolean|undefined|null, message?: string) => {
+          pushResult(
+            node,
+            assert,
+            has(node, prop, typeof value === 'undefined' ? true : value, message)
+          );
+        }
+
+
+        // @ts-ignore
+        this[prop] = assertions
       }
     }
   }
@@ -63,7 +92,11 @@ export class PageObjectAssert {
   }
 
   private pushResult(result: AssertionResult): void {
-    result.message = `${pageObjectPath(this.po)}: ${result.message}`;
-    this.assert.pushResult(result);
+    pushResult(this.po, this.assert, result);
   }
+}
+
+function pushResult(po: Component, assert: Assert, result: AssertionResult): void {
+  result.message = `${pageObjectPath(po)}: ${result.message}`;
+  assert.pushResult(result);
 }

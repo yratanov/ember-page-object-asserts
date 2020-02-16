@@ -12,33 +12,23 @@ Adds QUnit asserts for [ember-cli-page-object](https://github.com/san650/ember-c
 Why?
 ------------------------------------------------------------------------------
 
-For example you have this test:
-
+User-friendly messages and simpler syntax:
 
 ```js
 const page = create({
   link: {
     scope: 'a',
     href: attribute('href'),
-    hasText: hasText(),
+    isHighlighted: hasClass('highlighted'),
   },
 });
 
-assert.equal(page.link.text, 'Some text');
-assert.equal(page.link.hasText('something'));
-assert.ok(page.link.isPresent);
-```
-
-
-If you don't provide message for every assert you will get very unhelpful messages, like `expecte: true, got: false` and nothing more.
-But tests with page object are very descriptive by it's nature, we can utilize that to show better messages, without providing anything more.
-Example:
-
-```js
 assert.po(page.element).hasText("test"); //message 'page.element: has text "text"'
-assert.po(page.link).has('href', 'google.com'); //message 'page.link: has href "google.com"'
+assert.po(page.link).href('google.com'); //message 'page.link: has href "google.com"'
+assert.po(page.link).isHighlighted(); //message 'page.link: isHighlighted
 assert.po(page.input).isPresent();  //message 'page.input: is present'
 ``` 
+
 
 Compatibility
 ------------------------------------------------------------------------------
@@ -94,6 +84,11 @@ const page = create({
 
 assert.po(page.link).has('href', 'google.com');
 assert.po(page.link).has('isHighlighted');
+
+// Or even like this:
+
+assert.po(page.link).isHighlighted();
+assert.po(page.link).href('google.com');
 ```
 
 

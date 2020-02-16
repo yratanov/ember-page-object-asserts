@@ -6,9 +6,9 @@ import { attribute, create, hasClass } from 'ember-cli-page-object';
 import hbs from 'htmlbars-inline-precompile';
 
 const page = create({
-  name: {
-    scope: '[name="name"]',
-    isHighlighted: hasClass('highlighted')
+  password: {
+    scope: '[name="password"]',
+    isHighlighted: hasClass('highlighted'),
   },
   link: {
     scope: 'a',

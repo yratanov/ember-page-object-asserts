@@ -9,6 +9,15 @@ export class PageObjectAssert {
   constructor(node: Component, assert: Assert) {
     this.po = node;
     this.assert = assert;
+
+    for (let prop in node) {
+      if (node.hasOwnProperty(prop) && typeof node[prop] !== 'function') {
+        // @ts-ignore
+        this[prop] = (value?: any, message?: string) => {
+          return this.has(prop, value, message);
+        }
+      }
+    }
   }
 
   hasText(expected: string | RegExp, message?: string) {

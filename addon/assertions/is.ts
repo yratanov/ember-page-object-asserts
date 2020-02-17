@@ -6,6 +6,6 @@ export function is(po: Component, field: string, value?: any, message?: string) 
     result: actual === (typeof value === 'undefined' ? true : value),
     actual,
     expected: value,
-    message: message || `${field} is ${value}`
+    message: message || `${field} is "${value}"`
   };
 }

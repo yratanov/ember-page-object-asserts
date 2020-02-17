@@ -27,7 +27,7 @@ module('isNot', function(hooks) {
     assert.deepEqual(isNot(page.link, 'href', 'http://google.com'), {
       actual: 'http://google.com',
       expected: 'not http://google.com',
-      message: 'href is not http://google.com',
+      message: 'href is not "http://google.com"',
       result: false
     });
   });
@@ -36,7 +36,7 @@ module('isNot', function(hooks) {
     assert.deepEqual(isNot(page.link, 'href', 'http://22.com'), {
       actual: 'http://google.com',
       expected: 'not http://22.com',
-      message: 'href is not http://22.com',
+      message: 'href is not "http://22.com"',
       result: true
     });
   });
@@ -45,7 +45,7 @@ module('isNot', function(hooks) {
     assert.deepEqual(isNot(page.link, 'isDisabled', false), {
       actual: true,
       expected: 'not false',
-      message: 'isDisabled is not false',
+      message: 'isDisabled is not "false"',
       result: true
     });
   });
@@ -54,7 +54,7 @@ module('isNot', function(hooks) {
     assert.deepEqual(isNot(page.link, 'isDisabled', true), {
       actual: true,
       expected: 'not true',
-      message: 'isDisabled is not true',
+      message: 'isDisabled is not "true"',
       result: false
     });
   });

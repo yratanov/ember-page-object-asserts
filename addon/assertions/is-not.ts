@@ -6,6 +6,6 @@ export function isNot(po: Component, field: string, value?: any, message?: strin
     result: actual !== value,
     actual,
     expected: `not ${value}`,
-    message: message || `${field} is not ${value}`
+    message: message || `${field} is not "${value}"`
   };
 }

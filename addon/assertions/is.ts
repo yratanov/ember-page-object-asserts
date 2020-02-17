@@ -2,10 +2,12 @@ import { Component } from 'ember-cli-page-object/-private';
 
 export function is(po: Component, field: string, value?: any, message?: string) : AssertionResult {
   let actual = (po as any)[field];
+  let expected = typeof value === 'undefined' ? true : value;
+
   return {
-    result: actual === (typeof value === 'undefined' ? true : value),
+    result: actual === expected,
     actual,
-    expected: value,
-    message: message || `${field} is "${value}"`
+    expected,
+    message: message || `${field}${expected === true ? '' : ` is "${expected}"`}`
   };
 }

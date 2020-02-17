@@ -45,9 +45,19 @@ module('is', function(hooks) {
     assert.deepEqual(is(page.link, 'isDisabled', true), {
       actual: true,
       expected: true,
-      message: 'isDisabled is "true"',
+      message: 'isDisabled',
       result: true
     });
+  });
+
+
+  test('when undefined', async function(assert) {
+    assert.deepEqual(is(page.link, 'isDisabled'), {
+      actual: true,
+      expected: true,
+      message: 'isDisabled',
+      result: true
+    }, 'counts as true');
   });
 
   test('when false', async function(assert) {

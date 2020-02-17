@@ -1,5 +1,5 @@
-export { hasText } from './has-text';
-export { hasNoText } from './has-no-text';
-export { hasValue } from './has-value';
-export { has } from './has';
+export { is } from './is';
+export { isNot } from './is-not';
+export { includes } from './includes';
+export { doesNotInclude } from './does-not-include';
 export { hasItems } from './has-items';

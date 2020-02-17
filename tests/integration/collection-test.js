@@ -10,7 +10,7 @@ const page = create({
   surnames: collection('span')
 });
 
-module('hasItems', function(hooks) {
+module('collection', function(hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(async function() {
@@ -23,8 +23,8 @@ module('hasItems', function(hooks) {
     `);
   });
 
-  test('collection length', async function(assert) {
-    assert.po(page.names).hasItems(2);
-    assert.po(page.surnames).hasItems(3);
+  test('length', async function(assert) {
+    assert.po(page.names).length.is(2);
+    assert.po(page.surnames).length.is(3);
   });
 });

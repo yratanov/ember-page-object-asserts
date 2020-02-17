@@ -15,7 +15,7 @@ const page = create({
       isDescriptor: true,
 
       get() {
-        return true;
+        return 'value';
       }
     }
   },
@@ -35,16 +35,28 @@ module('bypassing properties', function(hooks) {
     `);
   });
 
-  test('checks property with default value', async function(assert) {
+  test('calling property as function', async function(assert) {
     assert.po(page.password).isHighlighted();
   });
 
-  test('checks property with passed value', async function(assert) {
-    assert.po(page.link).href('http://google.com');
+  test('is', async function(assert) {
+    assert.po(page.link).href.is('http://google.com');
+  });
+
+  test('includes', async function(assert) {
+    assert.po(page.link).href.includes('google');
+  });
+
+  test('doesNotInclude', async function(assert) {
+    assert.po(page.link).href.doesNotInclude('apple');
+  });
+
+  test('isNot', async function(assert) {
+    assert.po(page.link).href.isNot('http://goosagle.com');
   });
 
   test('checks custom property', async function(assert) {
-    assert.po(page.password).customField();
+    assert.po(page.password).customField.is('value');
   });
 
   test('raises error if property is a custom function', async function(assert) {

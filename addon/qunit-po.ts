@@ -11,7 +11,7 @@ declare global {
 export function addPoAssert() {
   QUnit.extend(QUnit.assert, {
     po(node: Component) {
-      if (typeof node === 'undefined') {
+      if (!node || typeof node === 'undefined') {
         throw 'pass page object to assert.po';
       }
       return new PageObjectAssert(node, this);

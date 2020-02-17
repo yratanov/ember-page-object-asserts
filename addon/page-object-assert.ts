@@ -1,10 +1,18 @@
 import { Component } from 'ember-cli-page-object/-private';
-import { has, hasItems, hasNoText, hasText, hasValue } from './assertions';
+import { doesNotInclude, includes, is, isNot } from './assertions';
 import { pageObjectPath } from './helpers/page-object-path';
 
+interface Assertions {
+  (value?: any, message?: string): void
+  is(...args: any[]): void
+  isNot(...args: any[]): void
+  includes(...args: any[]): void
+  doesNotInclude(...args: any[]): void
+}
+
 export class PageObjectAssert {
-  private assert: Assert;
-  private readonly po: Component;
+  readonly assert: Assert;
+  readonly po: Component;
 
   constructor(node: Component, assert: Assert) {
     this.po = node;
@@ -12,58 +20,42 @@ export class PageObjectAssert {
 
     for (let prop in node) {
       if (node.hasOwnProperty(prop) && typeof node[prop] !== 'function') {
-        // @ts-ignore
-        this[prop] = (value?: any, message?: string) => {
-          return this.has(prop, value, message);
-        }
+        this.buildAssertions(prop);
       }
+    }
+
+    if (typeof node.length !== 'undefined') {
+      this.buildAssertions('length');
     }
   }
 
-  hasText(expected: string | RegExp, message?: string) {
-    this.pushResult(hasText(this.po, expected, message));
-  }
+  private buildAssertions(prop: string): void {
+    let assert = this.assert;
+    let po = this.po;
 
-  hasValue(expected: string, message?: string) {
-    this.pushResult(hasValue(this.po, expected, message));
-  }
+    const assertions = function (value?: any, message?: string) {
+      pushResult(po, assert, is(po, prop, value, message));
+    } as Assertions;
 
-  hasNoText(expected: string | RegExp, message?: string) {
-    this.pushResult(hasNoText(this.po, expected, message));
-  }
+    assertions.includes = function (value: any, message?: string) {
+      pushResult(po, assert, includes(po, prop, value, message));
+    };
+    assertions.doesNotInclude = function (value: any, message?: string) {
+      pushResult(po, assert, doesNotInclude(po, prop, value, message));
+    };
+    assertions.is = function (value: string | number | boolean | undefined | null, message?: string) {
+      pushResult(po, assert, is(po, prop, value, message));
+    };
+    assertions.isNot = function (value: string | number | boolean | undefined | null, message?: string) {
+      pushResult(po, assert, isNot(po, prop, value, message));
+    };
 
-  has(field: string, value?: any, message?: string) {
-    this.pushResult(
-      has(this.po, field, typeof value === 'undefined' ? true : value, message)
-    );
+    // @ts-ignore
+    this[prop] = assertions;
   }
+}
 
-  isPresent(message?: string) {
-    this.pushResult({
-      actual: this.po.isPresent,
-      expected: true,
-      result: this.po.isPresent === true,
-      message: message || `is present`
-    });
-  }
-
-  isHidden(message?: string) {
-    this.pushResult({
-      actual: this.po.isHidden,
-      expected: true,
-      result: this.po.isHidden === true,
-      message: message || `is hidden`
-    });
-  }
-
-  hasItems(size: number, message?: string) {
-    this.pushResult(
-      hasItems(this.po, size, message)
-    );
-  }
-
-  private pushResult(result: AssertionResult): void {
-    result.message = `${pageObjectPath(this.po)}: ${result.message}`;
-    this.assert.pushResult(result);
-  }
+function pushResult(po: Component, assert: Assert, result: AssertionResult): void {
+  result.message = `${pageObjectPath(po)}: ${result.message}`;
+  assert.pushResult(result);
 }

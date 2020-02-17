@@ -2,6 +2,7 @@ ember-page-object-asserts
 ==============================================================================
 
 [![TravisCI Build Status][travis-badge]][travis-badge-url]
+[![codecov](https://codecov.io/gh/yratanov/ember-page-object-asserts/branch/master/graph/badge.svg)](https://codecov.io/gh/yratanov/ember-page-object-asserts)
 
 [travis-badge]: https://travis-ci.com/yratanov/ember-page-object-asserts.svg?branch=master
 [travis-badge-url]: https://travis-ci.org/yratanov/ember-page-object-asserts
@@ -23,10 +24,11 @@ const page = create({
   },
 });
 
-assert.po(page.element).hasText("test"); //message 'page.element: has text "text"'
-assert.po(page.link).href('google.com'); //message 'page.link: has href "google.com"'
+assert.po(page.element).text.is("test"); //message 'page.element: text is "text"'
+assert.po(page.link).href.is('google.com'); //message 'page.link: href is "google.com"'
+assert.po(page.link).href.includes('google.com'); //message 'page.link: href includes "google.com"'
 assert.po(page.link).isHighlighted(); //message 'page.link: isHighlighted
-assert.po(page.input).isPresent();  //message 'page.input: is present'
+assert.po(page.input).isPresent();  //message 'page.input: isPresent'
 ``` 
 
 
@@ -61,36 +63,20 @@ setApplication(Application.create(config.APP));
 
 #### Built-in asserts
 
-##### hasText/hasNoText
+##### is/isNot
 
 ```js
-assert.po(page.element).hasText("test");
-assert.po(page.element).hasText(/test/);
-
-assert.po(page.element).hasNoText("test");
-assert.po(page.element).hasNoText(/test/);
+assert.po(page.element).text.is("test");
+assert.po(page.element).text.isNot("test");
+assert.po(page.input).value.is('test');
 ```
 
-##### has
+##### includes/doesNotInclude
 
 ```js
-const page = create({
-  link: {
-    scope: 'a',
-    href: attribute('href'),
-    isHighlighted: hasClass('highlighted'),
-  },
-});
-
-assert.po(page.link).has('href', 'google.com');
-assert.po(page.link).has('isHighlighted');
-
-// Or even like this:
-
-assert.po(page.link).isHighlighted();
-assert.po(page.link).href('google.com');
+assert.po(page.element).text.includes("test");
+assert.po(page.element).text.doesNotInclude("test");
 ```
-
 
 ##### isPresent/isHidden
 
@@ -99,20 +85,27 @@ assert.po(page.input).isPresent();
 assert.po(page.input).isHidden();
 ```
 
-##### hasValue
-
-```js
-assert.po(page.input).hasValue('test');
-```
-
-##### hasItems
+##### Collections
 
 ```js
 const page = create({
   list: collection('li')
 });
 
-assert.po(page.list).hasItems(3);
+assert.po(page.list).length.is(3);
+```
+
+##### Properties as asserts
+
+```js
+const page = create({
+  link: {
+    isHighlighted: hasClass('highlighted'),
+  },
+});
+
+assert.po(page.list).isHighlighted();
+assert.po(page.list).isHighlighted(false);
 ```
 
 

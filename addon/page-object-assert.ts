@@ -1,5 +1,5 @@
 import { Component } from 'ember-cli-page-object/-private';
-import { doesNotInclude, hasItems, includes, is, isNot } from './assertions';
+import { doesNotInclude, includes, is, isNot } from './assertions';
 import { pageObjectPath } from './helpers/page-object-path';
 
 interface Assertions {
@@ -23,12 +23,10 @@ export class PageObjectAssert {
         this.buildAssertions(prop);
       }
     }
-  }
 
-  hasItems(size: number, message?: string) {
-    this.pushResult(
-      hasItems(this.po, size, message)
-    );
+    if (typeof node.length !== 'undefined') {
+      this.buildAssertions('length');
+    }
   }
 
   private buildAssertions(prop: string): void {
@@ -54,10 +52,6 @@ export class PageObjectAssert {
 
     // @ts-ignore
     this[prop] = assertions;
-  }
-
-  private pushResult(result: AssertionResult): void {
-    pushResult(this.po, this.assert, result);
   }
 }
 

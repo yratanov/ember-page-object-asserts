@@ -85,14 +85,14 @@ assert.po(page.input).isPresent();
 assert.po(page.input).isHidden();
 ```
 
-##### hasItems
+##### Collections
 
 ```js
 const page = create({
   list: collection('li')
 });
 
-assert.po(page.list).hasItems(3);
+assert.po(page.list).length.is(3);
 ```
 
 ##### Properties as asserts

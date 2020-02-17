@@ -23,7 +23,7 @@ const page = create({
   },
 });
 
-assert.po(page.element).test.is("test"); //message 'page.element: text is "text"'
+assert.po(page.element).text.is("test"); //message 'page.element: text is "text"'
 assert.po(page.link).href.is('google.com'); //message 'page.link: href is "google.com"'
 assert.po(page.link).href.isNot('apple.com'); //message 'page.link: href is "google.com"'
 assert.po(page.link).href.includes('google.com'); //message 'page.link: href includes "google.com"'

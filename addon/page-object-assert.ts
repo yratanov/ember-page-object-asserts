@@ -17,16 +17,12 @@ export class PageObjectAssert {
   constructor(node: Component, assert: Assert) {
     this.po = node;
     this.assert = assert;
-
-    for (let prop in node) {
-      if (node.hasOwnProperty(prop)) {
-        if (!node.isPresent) {
-          this.buildAssertions('isPresent');
-          this.buildAssertions('isHidden');
-          continue;
-        }
-
-        if (node.hasOwnProperty(prop) && typeof node[prop] !== 'function') {
+    if (!node.isPresent) {
+      this.buildAssertions('isPresent');
+      this.buildAssertions('isHidden');
+    } else {
+      for (let [prop, value] of Object.entries(node)) {
+        if (node.hasOwnProperty(prop) && typeof value !== 'function') {
           this.buildAssertions(prop);
         }
       }

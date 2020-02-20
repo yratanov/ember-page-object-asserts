@@ -7,7 +7,7 @@ import hbs from 'htmlbars-inline-precompile';
 
 const page = create({
   element: {
-    scope: 'element',
+    scope: '.element',
   }
 });
 

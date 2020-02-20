@@ -2,16 +2,17 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 
-import { create } from 'ember-cli-page-object';
+import { create, hasClass } from 'ember-cli-page-object';
 import hbs from 'htmlbars-inline-precompile';
 
 const page = create({
   wrongElement: {
-    scope: 'wrong-element',
+    scope: '.wrong-element',
+    isBla: hasClass('.test')
   }
 });
 
-module('isPresent', function(hooks) {
+module('isHidden', function(hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(async function() {

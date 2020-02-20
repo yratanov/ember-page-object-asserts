@@ -1,5 +1,5 @@
-import { Component } from "ember-cli-page-object/-private";
 import Ceibo from "ceibo";
+import { Component } from "ember-cli-page-object/-private";
 
 export function pageObjectPath(node: Component) {
   let path = [];

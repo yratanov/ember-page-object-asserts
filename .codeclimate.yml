@@ -1,0 +1,14 @@
+plugins:
+  eslint:
+    enabled: true
+    channel: "eslint-5"
+exclude_patterns:
+  - "config/"
+  - "dist/"
+  - "script/"
+  - "**/test/"
+  - "**/tests/"
+  - "Tests/"
+  - "**/vendor/"
+  - "**/*.d.ts"
+  - "translations/"

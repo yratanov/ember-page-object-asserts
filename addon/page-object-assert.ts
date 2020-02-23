@@ -1,6 +1,6 @@
 import { Component } from 'ember-cli-page-object/-private';
-import { doesNotInclude, includes, is, isNot } from './assertions';
 import { pageObjectPath } from './helpers/page-object-path';
+import { doesNotInclude, includes, is, isNot } from "ember-page-object-asserts/assertions";
 
 interface Assertions {
   (value?: any, message?: string): void
@@ -18,41 +18,40 @@ export class PageObjectAssert {
     this.po = node;
     this.assert = assert;
     if (!node.isPresent) {
-      this.buildAssertions('isPresent');
-      this.buildAssertions('isHidden');
+      this.buildAssertionFor('isPresent');
+      this.buildAssertionFor('isHidden');
     } else {
-      for (let [prop, value] of Object.entries(node)) {
-        if (node.hasOwnProperty(prop) && typeof value !== 'function') {
-          this.buildAssertions(prop);
-        }
-      }
+      this.buildAssertionsForProps();
     }
 
     if (typeof node.length !== 'undefined') {
-      this.buildAssertions('length');
+      this.buildAssertionFor('length');
     }
   }
 
-  private buildAssertions(prop: string): void {
+  private buildAssertionsForProps() {
+    for (let [prop, value] of Object.entries(this.po)) {
+      if (this.po.hasOwnProperty(prop) && typeof value !== 'function') {
+        this.buildAssertionFor(prop);
+      }
+    }
+  }
+
+  private buildAssertionFor(prop: string): void {
     let assert = this.assert;
     let po = this.po;
 
-    const assertions = function (value?: any, message?: string) {
-      pushResult(po, assert, is(po, prop, value, message));
-    } as Assertions;
+    let assertFunc = function(func: Function) {
+      return function (value: any, message?: string) {
+        pushResult(po, assert, func(po, prop, value, message));
+      };
+    };
 
-    assertions.includes = function (value: any, message?: string) {
-      pushResult(po, assert, includes(po, prop, value, message));
-    };
-    assertions.doesNotInclude = function (value: any, message?: string) {
-      pushResult(po, assert, doesNotInclude(po, prop, value, message));
-    };
-    assertions.is = function (value: string | number | boolean | undefined | null, message?: string) {
-      pushResult(po, assert, is(po, prop, value, message));
-    };
-    assertions.isNot = function (value: string | number | boolean | undefined | null, message?: string) {
-      pushResult(po, assert, isNot(po, prop, value, message));
-    };
+    const assertions = assertFunc(is) as Assertions;
+    assertions.includes = assertFunc(includes);
+    assertions.doesNotInclude = assertFunc(doesNotInclude);
+    assertions.is = assertFunc(is);
+    assertions.isNot = assertFunc(isNot);
 
     // @ts-ignore
     this[prop] = assertions;

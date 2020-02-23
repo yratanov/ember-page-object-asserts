@@ -4,6 +4,7 @@ ember-page-object-asserts
 [![TravisCI Build Status][travis-badge]][travis-badge-url]
 [![codecov](https://codecov.io/gh/yratanov/ember-page-object-asserts/branch/master/graph/badge.svg)](https://codecov.io/gh/yratanov/ember-page-object-asserts)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b8436017d28227f08ce/maintainability)](https://codeclimate.com/github/yratanov/ember-page-object-asserts/maintainability)
+[![Dependabot enabled](https://img.shields.io/badge/dependabot-enabled-blue.svg?logo=dependabot)](https://dependabot.com/)
 
 [travis-badge]: https://travis-ci.com/yratanov/ember-page-object-asserts.svg?branch=master
 [travis-badge-url]: https://travis-ci.org/yratanov/ember-page-object-asserts

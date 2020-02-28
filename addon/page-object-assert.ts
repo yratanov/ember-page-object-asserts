@@ -30,10 +30,8 @@ export class PageObjectAssert {
   }
 
   private buildAssertionsForProps() {
-    for (let [prop, value] of Object.entries(this.po)) {
-      if (this.po.hasOwnProperty(prop) && typeof value !== 'function') {
-        this.buildAssertionFor(prop);
-      }
+    for (let prop in this.po) {
+      this.buildAssertionFor(prop);
     }
   }
 
@@ -42,7 +40,7 @@ export class PageObjectAssert {
     let po = this.po;
 
     let assertFunc = function(func: Function) {
-      return function (value: any, message?: string) {
+      return function(value: any, message?: string) {
         pushResult(po, assert, func(po, prop, value, message));
       };
     };

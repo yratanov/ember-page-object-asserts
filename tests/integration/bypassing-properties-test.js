@@ -58,20 +58,4 @@ module('bypassing properties', function(hooks) {
   test('checks custom property', async function(assert) {
     assert.po(page.password).customField.is('value');
   });
-
-  test('raises error if property is a custom function', async function(assert) {
-    try {
-      assert.po(page.password).clack();
-    } catch (e) {
-      assert.equal(e.message, 'assert.po(...).clack is not a function')
-    }
-  });
-
-  test('raises error if property is a default function', async function(assert) {
-    try {
-      assert.po(page.password).click();
-    } catch (e) {
-      assert.equal(e.message, 'assert.po(...).click is not a function')
-    }
-  });
 });

@@ -31,9 +31,7 @@ export class PageObjectAssert {
 
   private buildAssertionsForProps() {
     for (let prop in this.po) {
-      if (this.po.hasOwnProperty(prop)) {
-        this.buildAssertionFor(prop);
-      }
+      this.buildAssertionFor(prop);
     }
   }
 

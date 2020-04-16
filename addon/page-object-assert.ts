@@ -12,25 +12,26 @@ interface Assertions {
   doesNotInclude(...args: any[]): void
 }
 
-export class PageObjectAssertProxy {
-  constructor(node: Component, qunitAssert: Assert) {
-    if (!node || typeof node === 'undefined') {
-      throw 'pass page object to assert.po';
-    }
-    let handler = {
-      get: function(pageObjectAssert: PageObjectAssert, name: string): any {
-        if (!(name in pageObjectAssert) && !pageObjectAssert.po.isPresent) {
-          findOne(pageObjectAssert.po);
-        }
-        if (!(name in pageObjectAssert)) {
-          throw new EmberError(`"${name}" not found in "${pageObjectPath(pageObjectAssert.po)}"`);
-        }
-        // @ts-ignore
-        return pageObjectAssert[name];
+const proxyHandler = {
+  get: function(pageObjectAssert: PageObjectAssert, name: string): any {
+    if (!(name in pageObjectAssert)) {
+      if(!pageObjectAssert.po.isPresent) {
+        findOne(pageObjectAssert.po);
+      } else {
+        throw new EmberError(`"${name}" not found in "${pageObjectPath(pageObjectAssert.po)}"`);
       }
-    };
-    return new Proxy(new PageObjectAssert(node, qunitAssert), handler);
+    }
+
+    // @ts-ignore
+    return pageObjectAssert[name];
   }
+}
+
+export function createProxy(node: Component, qunitAssert: Assert) {
+  if (!node || typeof node === 'undefined') {
+    throw 'pass page object to assert.po';
+  }
+  return new Proxy(new PageObjectAssert(node, qunitAssert), proxyHandler);
 }
 
 export class PageObjectAssert {

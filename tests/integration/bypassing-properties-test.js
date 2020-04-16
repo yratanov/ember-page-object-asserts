@@ -19,6 +19,9 @@ const page = create({
       }
     }
   },
+  notExisting: {
+    scope: '.not-existing',
+  },
   link: {
     scope: 'a',
     href: attribute('href')
@@ -53,6 +56,26 @@ module('bypassing properties', function(hooks) {
 
   test('isNot', async function(assert) {
     assert.po(page.link).href.isNot('http://goosagle.com');
+  });
+
+  test('responds with proper message when trying to access field of not existing page object', async function(assert) {
+    assert.raises(() => {
+      assert.po(page.notExisting).text.is('test');
+    }, /Error: Element not found/);
+
+    assert.raises(() => {
+      assert.po(page.notExisting).text.is('test');
+    }, /PageObject: 'page.notExisting.'/);
+
+    assert.raises(() => {
+      assert.po(page.notExisting).text.is('test');
+    }, /Selector: '.not-existing'/);
+  });
+
+  test('responds with proper message when trying to access not existing field of existing page object', async function(assert) {
+    assert.raises(() => {
+      assert.po(page.link).notExistingProp.is('test');
+    }, /Error: "notExistingProp" not found in "page.link"/);
   });
 
   test('checks custom property', async function(assert) {

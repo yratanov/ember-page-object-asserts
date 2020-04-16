@@ -1,5 +1,5 @@
 import QUnit from 'qunit';
-import { PageObjectAssert } from './page-object-assert';
+import { PageObjectAssert, PageObjectAssertProxy } from './page-object-assert';
 import { Component } from 'ember-cli-page-object/-private';
 
 declare global {
@@ -11,10 +11,7 @@ declare global {
 export function addPoAssert() {
   QUnit.extend(QUnit.assert, {
     po(node: Component) {
-      if (!node || typeof node === 'undefined') {
-        throw 'pass page object to assert.po';
-      }
-      return new PageObjectAssert(node, this);
+      return new PageObjectAssertProxy(node, this);
     }
   });
 }

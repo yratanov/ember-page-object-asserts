@@ -1,6 +1,8 @@
 import { Component } from 'ember-cli-page-object/-private';
 import { pageObjectPath } from './helpers/page-object-path';
 import { doesNotInclude, includes, is, isNot } from "ember-page-object-asserts/assertions";
+import { findOne } from 'ember-cli-page-object/extend';
+import EmberError from '@ember/error';
 
 interface Assertions {
   (value?: any, message?: string): void
@@ -8,6 +10,27 @@ interface Assertions {
   isNot(...args: any[]): void
   includes(...args: any[]): void
   doesNotInclude(...args: any[]): void
+}
+
+export class PageObjectAssertProxy {
+  constructor(node: Component, qunitAssert: Assert) {
+    if (!node || typeof node === 'undefined') {
+      throw 'pass page object to assert.po';
+    }
+    let handler = {
+      get: function(pageObjectAssert: PageObjectAssert, name: string): any {
+        if (!(name in pageObjectAssert) && !pageObjectAssert.po.isPresent) {
+          findOne(pageObjectAssert.po);
+        }
+        if (!(name in pageObjectAssert)) {
+          throw new EmberError(`"${name}" not found in "${pageObjectPath(pageObjectAssert.po)}"`);
+        }
+        // @ts-ignore
+        return pageObjectAssert[name];
+      }
+    };
+    return new Proxy(new PageObjectAssert(node, qunitAssert), handler);
+  }
 }
 
 export class PageObjectAssert {

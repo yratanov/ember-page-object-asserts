@@ -45,7 +45,7 @@ module('isNot', function(hooks) {
     assert.deepEqual(isNot(page.link, 'isDisabled', false), {
       actual: true,
       expected: 'not false',
-      message: 'isDisabled is not "false"',
+      message: 'is disabled',
       result: true
     });
   });
@@ -54,7 +54,7 @@ module('isNot', function(hooks) {
     assert.deepEqual(isNot(page.link, 'isDisabled', true), {
       actual: true,
       expected: 'not true',
-      message: 'isDisabled is not "true"',
+      message: 'not is disabled',
       result: false
     });
   });

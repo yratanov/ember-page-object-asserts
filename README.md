@@ -29,8 +29,8 @@ const page = create({
 assert.po(page.element).text.is("test"); //message 'page.element: text is "text"'
 assert.po(page.link).href.is('google.com'); //message 'page.link: href is "google.com"'
 assert.po(page.link).href.includes('google.com'); //message 'page.link: href includes "google.com"'
-assert.po(page.link).isHighlighted(); //message 'page.link: isHighlighted
-assert.po(page.input).isPresent();  //message 'page.input: isPresent'
+assert.po(page.link).isHighlighted(); //message 'page.link: is highlighted'
+assert.po(page.input).isPresent();  //message 'page.input: is present'
 ``` 
 
 

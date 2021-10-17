@@ -1,14 +1,14 @@
-workflow "Build and Test" {
+workflow "Test and deploy" {
   on = "push"
-  resolves = ["Run Tests"]
+  resolves = ["Run ember tests"]
 }
 
 action "Install Dependencies" {
-  uses = "nuxt/actions-yarn@node-10"
+  uses = "actions/npm@master"
   args = "install"
 }
 
-action "Run Tests" {
+action "Run ember tests" {
   uses = "alexlafroscia/actions-ember-testing@master"
   needs = ["Install Dependencies"]
 }

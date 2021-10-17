@@ -24,7 +24,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
+      - uses: actions/npm@master
+      - run: npm install
       - name: GitHub Action for Ember Testing
         uses: alexlafroscia/actions-ember-testing@v1.0.0
 
